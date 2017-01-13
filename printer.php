@@ -1,7 +1,7 @@
 <?php
 
-use Memoye\Printer\Drivers\TestLog;
+use Memoye\Printer\Drivers\Log;
 
 return [
-    'driver' => TestLog::class
+    'driver' => Log::class
 ];
