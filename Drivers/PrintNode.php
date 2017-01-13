@@ -5,35 +5,27 @@ namespace Memoye\Printer\Drivers;
 
 
 use Memoye\Printer\Contracts\Printer;
+use Memoye\Printer\Contracts\PrinterType;
 use PrintNode\Credentials;
 use PrintNode\PrintJob;
 use PrintNode\Request;
 
 class PrintNode implements Printer
 {
-    private $apiKey;
-    private $request;
-
-    function __construct()
-    {
-        $this->apiKey = config('printer.apy_key');
-
-        $this->request = new Request($this->credentials);
-    }
-
-    public function setApiKey($apikey){
-        $this->apiKey = $apikey;
-        return $this;
-    }
+    /**
+     * @var PrinterType
+     */
+    protected $printer;
 
     public function print($content)
     {
-        $printJob = new PrintJob();
+        //Todo: trasformare content in pdf
 
+        $this->printer->sendPrintJob($content);
     }
 
-    private function getCredentials(){
-        $credentials = new Credentials();
-        return $credentials->setApiKey($this->apiKey);
+    public function setPrinter(PrinterType $printerType)
+    {
+        $this->printer = $printerType;
     }
 }

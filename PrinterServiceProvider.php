@@ -6,9 +6,14 @@ namespace Memoye\Printer;
 
 use Illuminate\Support\ServiceProvider;
 use Memoye\Printer\Contracts\Printer;
+use Memoye\Printer\PrinterTypes\PrintNodePrinter;
 
 class PrinterServiceProvider extends ServiceProvider
 {
+
+    protected $availableService = [
+        'printnode' => PrintNodePrinter::class
+    ];
 
     /**
      * Perform post-registration booting of services.
@@ -29,7 +34,13 @@ class PrinterServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // $app['Memoye\Printer\Contracts\Printer']
+        // $app['printnode']
         $this->app->bind(Printer::class, config('printer.driver'));
+
+        foreach ($this->availableService as $alias => $class){
+            $this->app->bind($alias, $class);   // $app['printnode'] = PrintNodePrinter::class
+        }
 
         $this->mergeConfigFrom(
             __DIR__.'/printer.php', 'printer'
